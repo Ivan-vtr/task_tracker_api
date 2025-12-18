@@ -2,13 +2,50 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
+	"os"
+	"task_tracker_api/internal/config"
+)
+
+const (
+	envLocal = "local"
+	envDev   = "dev"
+	envProd  = "prod"
 )
 
 func main() {
-	s := "gopher"
-	fmt.Printf("Hello and welcome, %s!\n", s)
+	cfg := config.MustLoad()
 
-	for i := 1; i <= 5; i++ {
-		fmt.Println("i =", 100/i)
+	fmt.Println(cfg)
+
+	// TODO: init logger: log/slog
+
+	log := setupLogger(cfg.Env)
+	log.Info("started task_tracker_api", slog.String("env", cfg.Env))
+	log.Debug("debug messages are enabled")
+
+	// Todo: init storage: postgresql
+
+	// Todo: init router: chi
+
+	// Todo: init server
+}
+
+func setupLogger(env string) *slog.Logger {
+	var log *slog.Logger
+	switch env {
+	case envLocal:
+		log = slog.New(
+			slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}),
+		)
+	case envDev:
+		log = slog.New(
+			slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}),
+		)
+	case envProd:
+		log = slog.New(
+			slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}),
+		)
 	}
+	return log
 }
