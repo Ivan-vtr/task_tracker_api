@@ -2,9 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"log/slog"
 	"os"
 	"task_tracker_api/internal/config"
+
+	"github.com/joho/godotenv"
 )
 
 const (
@@ -17,6 +20,13 @@ func main() {
 	cfg := config.MustLoad()
 
 	fmt.Println(cfg)
+
+	err := godotenv.Load("/home/flora/GolandProjects/task_tracker_api/.env")
+	if err != nil {
+		log.Println(".env file not found, using system environment")
+	} else {
+		fmt.Println(".env file found")
+	}
 
 	// TODO: init logger: log/slog
 
