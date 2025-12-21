@@ -1,7 +1,7 @@
 env: "local" # local, dev, prod'
 
 http_server:
-  address: "localhost:8082"
+  address: "localhost:8080"
   timeout: 4s #выделенное время на обработку и ответ на запрос пользователя
   idle_timeout: 60s #время ожидания повторного запроса для клиента
 
@@ -11,7 +11,7 @@ database:
   name: "task_api"
   host: "localhost"
   port: 5433
-  url: "postgres://postgres:cbvcbv@localhost:5433/task_api"
+  url: "postgres://postgres:cbvcbv@localhost:5433/task_api?sslmode=disable"
 
 auth:
   jwt_secret: "super_secret_key"
