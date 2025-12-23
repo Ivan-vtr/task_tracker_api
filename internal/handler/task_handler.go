@@ -54,3 +54,15 @@ func (h *TaskHandler) Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (h *TaskHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+	task, err := h.service.GetAll(r.Context())
+	if err != nil {
+		http.Error(w, "not found", http.StatusInternalServerError)
+		return
+	}
+	if err := json.NewEncoder(w).Encode(task); err != nil {
+		http.Error(w, "encoding error", http.StatusInternalServerError)
+		return
+	}
+}

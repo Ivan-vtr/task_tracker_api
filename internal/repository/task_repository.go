@@ -10,6 +10,7 @@ import (
 type TaskRepository interface {
 	Create(ctx context.Context, task *model.Task) error
 	GetById(ctx context.Context, id int64) (*model.Task, error)
+	GetAll(ctx context.Context) ([]*model.Task, error)
 }
 
 type taskRepository struct {
@@ -56,4 +57,21 @@ func (r *taskRepository) GetById(
 	}
 
 	return &task, nil
+}
+
+func (r *taskRepository) GetAll(
+	ctx context.Context,
+) ([]*model.Task, error) {
+	var tasks []*model.Task
+
+	query := `
+		SELECT id, created_at, title, description, status
+		FROM tasks
+	`
+
+	if err := r.db.SelectContext(ctx, &tasks, query); err != nil {
+		return nil, err
+	}
+
+	return tasks, nil
 }

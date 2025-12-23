@@ -10,6 +10,7 @@ import (
 type TaskService interface {
 	Create(ctx context.Context, task *model.Task) error
 	Get(ctx context.Context, id int64) (*model.Task, error)
+	GetAll(ctx context.Context) ([]*model.Task, error)
 }
 
 type taskService struct {
@@ -35,4 +36,8 @@ func (s *taskService) Get(
 	id int64,
 ) (*model.Task, error) {
 	return s.repo.GetById(ctx, id)
+}
+
+func (s *taskService) GetAll(ctx context.Context) ([]*model.Task, error) {
+	return s.repo.GetAll(ctx)
 }

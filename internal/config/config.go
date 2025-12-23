@@ -12,6 +12,13 @@ type Config struct {
 	Env        string `yaml:"env" env-default:"local"`
 	HttpServer `yaml:"http_server"`
 	Database   `yaml:"database"`
+	Auth       `yaml:"auth"`
+}
+
+type Auth struct {
+	JWTSecret       string        `yaml:"jwt_secret" env-required:"true"`
+	AccessTokenTTL  time.Duration `yaml:"access_token_ttl" env-default:"15m"`
+	RefreshTokenTTL time.Duration `yaml:"refresh_token_ttl" env-default:"168h"`
 }
 
 type HttpServer struct {
